@@ -11,16 +11,18 @@ pipeline {
             steps {
                 sh 'printenv'
                 echo 'Launching EC2 in progress..'
-                script {
-                    def outputs = cfnUpdate(stack: "$stackName", 
-                        file:'ec2.yaml', 
-                        params:['launchTemplateName': "$launchTemplateName"], 
-                        timeoutInMinutes:10, 
-                        tags:["BUILD_ID=$BUILD_ID,GIT_BRANCH=$GIT_BRANCH"], 
-                        pollInterval: 5000)
-                    
-                    echo outputs
-                    echo "$outputs"
+                withAWS(region:'us-east-1',credentials: "$awsCredId") {
+                    script {
+                        def outputs = cfnUpdate(stack: "$stackName", 
+                            file:'ec2.yaml', 
+                            params:['launchTemplateName': "$launchTemplateName"], 
+                            timeoutInMinutes:10, 
+                            tags:["BUILD_ID=$BUILD_ID,GIT_BRANCH=$GIT_BRANCH"], 
+                            pollInterval: 5000)
+                        
+                        echo outputs
+                        echo "$outputs"
+                    }
                 }
 
 
