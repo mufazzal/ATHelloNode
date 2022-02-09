@@ -14,6 +14,7 @@ pipeline {
                 withAWS(region:'us-east-1',credentials: "$awsCredId") {
                     script {
                         def outputs = cfnUpdate(stack: "$stackName", 
+                            create: 'true'
                             file:'ec2.yaml', 
                             params:['launchTemplateName': "$launchTemplateName"], 
                             timeoutInMinutes:10, 
