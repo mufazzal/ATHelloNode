@@ -2,7 +2,7 @@ pipeline {
     agent { label 'slave-ec2-fleet' }
     tools {nodejs "nodejs"}
     environment {
-        launchTemplateName = "lt-0fda167710b05d85f"
+        launchTemplateName = "ATTest-EC2Config-ATTestLT-Developement"
         awsCredId = "Mufazzal"
         stackName = "Automation-stack-" + "$GIT_BRANCH.$BUILD_ID" 
     }
