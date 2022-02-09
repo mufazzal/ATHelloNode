@@ -1,0 +1,10 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Resources:
+  Ec2Instance: 
+    Type: AWS::EC2::Instance
+    Properties: 
+      LaunchTemplateSpecification:
+        LaunchTemplateName: !Ref launchTemplateName  
+  Parameters:
+    launchTemplateName:
+      Type: String
