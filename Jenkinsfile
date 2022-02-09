@@ -4,7 +4,7 @@ pipeline {
     environment {
         launchTemplateName = "ATTest-EC2Config-ATTestLT-Developement"
         awsCredId = "Mufazzal"
-        stackName = "Automation-stack-" + "$GIT_BRANCH.$BUILD_ID" 
+        stackName = "Automation-stack-Developement-" + "$BUILD_ID" 
     }
     stages {
         stage('Launch EC2') {
@@ -17,7 +17,7 @@ pipeline {
                             file:'ec2.yaml', 
                             params:['launchTemplateName': "$launchTemplateName"], 
                             timeoutInMinutes:10, 
-                            tags:["BUILD_ID=$BUILD_ID,GIT_BRANCH=$GIT_BRANCH"], 
+                            tags:["BUILD_ID=$BUILD_ID,Source_branch=Developement"], 
                             pollInterval: 5000)
                         
                         echo outputs
