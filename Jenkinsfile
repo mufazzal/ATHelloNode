@@ -11,20 +11,25 @@ pipeline {
             steps {
                 sh 'printenv'
                 echo 'Launching EC2 in progress..'
-                withAWS(region:'us-east-1',credentials: "$awsCredId") {
-                    script {
-                        def outputs = cfnUpdate(stack: "$stackName", 
-                            create: 'true'
-                            file:'ec2.yaml', 
-                            params:['launchTemplateName': "$launchTemplateName"], 
-                            timeoutInMinutes:10, 
-                            tags:["BUILD_ID=$BUILD_ID,Source_branch=Developement"], 
-                            pollInterval: 5000)
+                sh """
+                    cd ATInfraLaunch
+                    terraform init
+                    terraform apply -input=false -auto-approve var="launchTemplateName=$launchTemplateName"
+                """
+                // withAWS(region:'us-east-1',credentials: "$awsCredId") {
+                //     script {
+                //         def outputs = cfnUpdate(stack: "$stackName", 
+                //             create: 'true',
+                //             file:'ec2.yaml', 
+                //             params:['launchTemplateName': "$launchTemplateName"], 
+                //             timeoutInMinutes:10, 
+                //             tags:["BUILD_ID=$BUILD_ID,Source_branch=Developement"], 
+                //             pollInterval: 5000)
                         
-                        echo outputs
-                        echo "$outputs"
-                    }
-                }
+                //         echo outputs
+                //         echo "$outputs"
+                //     }
+                // }
 
 
                 echo 'Launching EC2 Finished'
