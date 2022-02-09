@@ -1,6 +1,9 @@
 pipeline {
     agent { label 'slave-ec2-fleet' }
-    tools {nodejs "nodejs"}
+    tools { 
+            nodejs "nodejs",
+            terraform "terraform"
+        }
     environment {
         launchTemplateName = "ATTest-EC2Config-ATTestLT-Developement"
         awsCredId = "Mufazzal"
