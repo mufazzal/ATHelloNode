@@ -34,7 +34,7 @@ pipeline {
                     echo "tfOutput: $tfOutput"     
                     def jsonObj = readJSON text: "$tfOutput"
                     //def privatIp = "$jsonObj.private_ip.value"
-                    env.privatIp = jsonObj.public_ip.value
+                    env.privatIp = jsonObj.private_ip.value
                     echo env.privatIp
                 }           
 
