@@ -1,3 +1,7 @@
+provider "aws" {
+  region = "us-east-1"
+}
+
 resource "aws_instance" "AT_ec2" {
 
     launch_template {
