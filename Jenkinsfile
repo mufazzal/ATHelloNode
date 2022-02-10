@@ -51,7 +51,7 @@ pipeline {
 
         stage('Running Tests') {
             steps {
-                sh "node test ${privatIp} ${port}"
+                sh "node test http://${privatIp} ${port}"
             }
         }      
 
