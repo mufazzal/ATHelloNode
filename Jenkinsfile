@@ -61,7 +61,7 @@ pipeline {
             
             sh """
                 cd ATInfraLaunch
-                terraform destroy -auto-approve"
+                terraform destroy -auto-approve
             """
 
             echo 'Terminating EC2 Finished'
