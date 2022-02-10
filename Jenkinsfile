@@ -62,7 +62,7 @@ pipeline {
             
             sh """
                 cd ATInfraLaunch
-                terraform destroy -auto-approve
+                terraform destroy -auto-approve -var="launchTemplateName=$launchTemplateName" -var="name=Developement-$BUILD_ID"
             """
 
             echo 'Terminating EC2 Finished'
