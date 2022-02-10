@@ -14,10 +14,6 @@
 						"exec": [
 							"pm.test('There should be greeting', function() {\r",
 							"    pm.expect(pm.response.text()).to.include('Hello from Application1')\r",
-							"})\r",
-							"\r",
-							"pm.test('There should be Flavour Name', function() {\r",
-							"    pm.expect(pm.response.text()).to.include(pm.environment.get('Flavour'))\r",
 							"})"
 						],
 						"type": "text/javascript"

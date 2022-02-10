@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "test:ATS": "node test http://54.211.165.109 3010"
+    "test:ATS": "node test http://184.72.206.224 3010"
   },
   "repository": {
     "type": "git",
