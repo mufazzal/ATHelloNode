@@ -49,7 +49,7 @@ pipeline {
                 sh 'npm install'
             }
         }      
-
+ 
         stage('Running Tests') {
             steps {
                 sh "node test http://${privatIp} ${port}"
