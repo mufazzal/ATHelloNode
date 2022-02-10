@@ -40,6 +40,7 @@ pipeline {
 
                 echo 'Launching EC2 Finished'
                 echo "Waiting for ${waitTimeForAppInstall} ${waitTimeUnitForAppInstall} for Application installation"
+                sleep(time: waitTimeForAppInstall, unit: waitTimeUnitForAppInstall) 
             }
         }     
 
