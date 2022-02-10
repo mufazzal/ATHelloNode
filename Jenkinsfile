@@ -7,6 +7,9 @@ pipeline {
         launchTemplateName = "ATTest-EC2Config-ATTestLT-Developement"
         awsCredId = "Mufazzal"
         stackName = "Automation-stack-Developement-" + "$BUILD_ID" 
+        port = 3010
+        waitTimeForAppInstall = 1
+        waitTimeUnitForAppInstall = "MINUTES"
     }
     stages {
         stage('Launch EC2') {
@@ -35,13 +38,31 @@ pipeline {
                 }           
 
                 echo 'Launching EC2 Finished'
+                echo "Waiting for ${waitTimeForAppInstall} ${waitTimeUnitForAppInstall} for Application installation"
             }
         }     
+
+        stage('Installing Dependency') {
+            steps {
+                sh 'npm install'
+            }
+        }      
+
+        stage('Running Tests') {
+            steps {
+                sh "node test ${privatIp} ${port}"
+            }
+        }      
+
 
         stage('Terminating EC2') {
             steps {
                 echo 'Terminating EC2 in progress..'
                 
+                sh """
+                    cd ATInfraLaunch
+                    terraform apply destroy -auto-approve"
+                """
 
                 echo 'Terminating EC2 Finished'
             }
