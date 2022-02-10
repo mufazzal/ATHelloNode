@@ -28,11 +28,9 @@ pipeline {
                         returnStdout: true
                     ).trim()
                     echo "tfOutput: $tfOutput"     
+                    def jsonObj = readJSON text: "$tfOutput"
+                    echo "$jsonObj"
                 }           
-                // script {
-                //     def jsonObj = readJSON text: (sh 'terraform output -json')
-                // }
-                // echo $jsonObj
 
                 echo 'Launching EC2 Finished'
             }
