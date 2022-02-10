@@ -18,7 +18,6 @@ pipeline {
                     cd ATInfraLaunch
                     terraform init
                     terraform apply -input=false -auto-approve -var="launchTemplateName=$launchTemplateName"
-                    terraform output -json
                 """
                 script {
                     tfOutput = sh (
