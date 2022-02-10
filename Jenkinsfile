@@ -53,19 +53,18 @@ pipeline {
             steps {
                 sh "node test http://${privatIp} ${port}"
             }
-        }      
-
-        post { 
-            always { 
-                 echo 'Terminating EC2 in progress..'
-                
-                sh """
-                    cd ATInfraLaunch
-                    terraform destroy -auto-approve"
-                """
-
-                echo 'Terminating EC2 Finished'
-            }
-        }    
+        }       
     }
+    post { 
+        always { 
+                echo 'Terminating EC2 in progress..'
+            
+            sh """
+                cd ATInfraLaunch
+                terraform destroy -auto-approve"
+            """
+
+            echo 'Terminating EC2 Finished'
+        }
+    }      
 }
