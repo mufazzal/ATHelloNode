@@ -20,12 +20,13 @@ pipeline {
                     terraform apply -input=false -auto-approve -var="launchTemplateName=$launchTemplateName"
                     
                 """
-
-                tfOutput = sh (
-                    script: 'terraform output -json',
-                    returnStdout: true
-                ).trim()
-                echo "tfOutput: ${tfOutput}"                
+                script {
+                    tfOutput = sh (
+                        script: 'terraform output -json',
+                        returnStdout: true
+                    ).trim()
+                    echo "tfOutput: ${tfOutput}"     
+                }           
                 // script {
                 //     def jsonObj = readJSON text: (sh 'terraform output -json')
                 // }
