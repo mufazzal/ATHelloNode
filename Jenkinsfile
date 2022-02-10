@@ -16,7 +16,7 @@ pipeline {
                 sh """
                     cd ATInfraLaunch
                     terraform init
-                    terraform apply -input=false -auto-approve var="launchTemplateName=$launchTemplateName"
+                    terraform apply -input=false -auto-approve -var="launchTemplateName=$launchTemplateName"
                 """
                 // withAWS(region:'us-east-1',credentials: "$awsCredId") {
                 //     script {
