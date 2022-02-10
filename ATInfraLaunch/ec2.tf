@@ -8,7 +8,7 @@ resource "aws_instance" "AT_ec2" {
         name = var.launchTemplateName 
         version = "$Default"
     }
-    tags {
+    tags = {
       Name = "AT-Test-${var.name}"
     }
 }
