@@ -9,7 +9,7 @@ pipeline {
         awsCredId = "Mufazzal"
         stackName = "Automation-stack-Developement-" + "$BUILD_ID" 
         port = 3010
-        waitTimeForAppInstall = 1
+        waitTimeForAppInstall = 3
         waitTimeUnitForAppInstall = "MINUTES"
     }
     stages {
