@@ -40,10 +40,6 @@ pipeline {
             steps {
                 echo 'Terminating EC2 in progress..'
                 
-                // def outputs = cfnDelete(stack: "$stackName"], pollInterval: 5000)
-                
-                // echo outputs
-                // echo "$outputs"
 
                 echo 'Terminating EC2 Finished'
             }
