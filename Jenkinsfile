@@ -55,18 +55,17 @@ pipeline {
             }
         }      
 
-
-        stage('Terminating EC2') {
-            steps {
-                echo 'Terminating EC2 in progress..'
+        post { 
+            always { 
+                 echo 'Terminating EC2 in progress..'
                 
                 sh """
                     cd ATInfraLaunch
-                    terraform apply destroy -auto-approve"
+                    terraform destroy -auto-approve"
                 """
 
                 echo 'Terminating EC2 Finished'
             }
-        }      
+        }    
     }
 }
