@@ -29,7 +29,9 @@ pipeline {
                     ).trim()
                     echo "tfOutput: $tfOutput"     
                     def jsonObj = readJSON text: "$tfOutput"
-                    echo "$jsonObj.private_ip.value"
+                    //def privatIp = "$jsonObj.private_ip.value"
+                    env.privatIp = jsonObj.private_ip.value
+                    echo env.privatIp
                 }           
 
                 echo 'Launching EC2 Finished'
