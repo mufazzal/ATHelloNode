@@ -17,7 +17,7 @@ pipeline {
                 sh """
                     cd ATInfraLaunch
                     terraform init
-                    terraform apply -input=false -auto-approve -var="launchTemplateName=$launchTemplateName"
+                    terraform apply -input=false -auto-approve -var="launchTemplateName=$launchTemplateName" -var="name=Developement-$BUILD_ID"
                 """
                 script {
                     tfOutput = sh (

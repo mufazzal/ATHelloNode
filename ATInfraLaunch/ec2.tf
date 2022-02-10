@@ -8,9 +8,19 @@ resource "aws_instance" "AT_ec2" {
         name = var.launchTemplateName 
         version = "$Default"
     }
+    tags {
+      Name = "AT-Test-${var.name}"
+    }
 }
 
 variable "launchTemplateName" {
+  description = "Name to be used on all the resources as identifier"
+  type        = string
+  default     = ""
+}
+
+
+variable "name" {
   description = "Name to be used on all the resources as identifier"
   type        = string
   default     = ""
