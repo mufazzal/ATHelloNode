@@ -20,10 +20,16 @@ pipeline {
                     terraform apply -input=false -auto-approve -var="launchTemplateName=$launchTemplateName"
                     
                 """
-                script {
-                    def jsonObj = readJSON text: (sh 'terraform output -json')
-                }
-                echo jsonObj
+
+                tfOutput = sh (
+                    script: 'terraform output -json',
+                    returnStdout: true
+                ).trim()
+                echo "tfOutput: ${tfOutput}"                
+                // script {
+                //     def jsonObj = readJSON text: (sh 'terraform output -json')
+                // }
+                // echo $jsonObj
 
                 echo 'Launching EC2 Finished'
             }
