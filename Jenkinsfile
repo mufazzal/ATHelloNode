@@ -18,14 +18,17 @@ pipeline {
                     cd ATInfraLaunch
                     terraform init
                     terraform apply -input=false -auto-approve -var="launchTemplateName=$launchTemplateName"
-                    
+                    terraform output -json
                 """
                 script {
                     tfOutput = sh (
-                        script: 'terraform output -json',
+                        script: """
+                            cd ATInfraLaunch
+                            terraform output -json
+                        """,
                         returnStdout: true
                     ).trim()
-                    echo "tfOutput: ${tfOutput}"     
+                    echo "tfOutput: $tfOutput"     
                 }           
                 // script {
                 //     def jsonObj = readJSON text: (sh 'terraform output -json')
