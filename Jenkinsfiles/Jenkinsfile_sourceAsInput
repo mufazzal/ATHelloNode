@@ -7,7 +7,7 @@ pipeline {
 
     parameters {
         string(name: 'sourceCodeS3ZipFilePath', defaultValue: '', description: 'Please provide S3 path for source code Zip')
-        booleanParam(name: 'promptBeforeKilMachine', defaultValue: false, description: 'Should wait For User for procced After Test')
+        booleanParam(name: 'shouldKillATTMachine', defaultValue: true, description: 'Should Jenkins kill the automation test machine after test finished')
     }        
     environment {
         launchTemplateName = "ATTest-EC2Config-ATTestLT"
@@ -64,36 +64,21 @@ pipeline {
             }
         }       
 
-        stage('Approval') {
+        stage('Terminating EC2') {
             when {
-                expression { params.promptBeforeKilMachine == true }
+                expression { params.shouldKillATTMachine == true }
             }
             steps {
-                script {
-                    def shouldProceed = input message: 'Do you wants to kill Automation machine?',
-                             parameters: [booleanParam(defaultValue: true, name: 'killMachine')]
-                }
-                // input {
-                //     message "Do you wants to kill Automation machine? (to proceede plz open Blue Ocean and click proceed. Jenkin classic has issue with input)"
-                // }
-                echo "proceeding to kill Automation machine"
+                 echo 'Terminating EC2 in progress..'
+            
+                sh """
+                    cd ATInfraLaunch
+                    terraform destroy -auto-approve \
+                        -var="launchTemplateName=$launchTemplateName"
+                """
+
+                echo 'Terminating EC2 Finished'
             }
         } 
-    }
-
-
-
-    post { 
-        always { 
-                echo 'Terminating EC2 in progress..'
-            
-            sh """
-                cd ATInfraLaunch
-                terraform destroy -auto-approve \
-                    -var="launchTemplateName=$launchTemplateName"
-            """
-
-            echo 'Terminating EC2 Finished'
-        }
-    }      
+    } 
 }
