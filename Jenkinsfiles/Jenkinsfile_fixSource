@@ -1,3 +1,17 @@
+def setPipeLineBranchSpecificVariables(pipelineName) {
+
+    if(pipelineName.contains('Developement')) { 
+        def stackNamePrefix = "Automation-stack-Developement-"
+        def sourceCodeS3ZipFilePath = "s3://muf-modular-cfr-bucket/feature-jenkin-hello/latest.zip" 
+
+    } else if(pipelineName.contains('Master')) { 
+        def stackNamePrefix = "Automation-stack-master-"
+        def sourceCodeS3ZipFilePath = "s3://muf-modular-cfr-bucket/feature-jenkin-hello/latest.zip"
+    }
+
+    return [stackNamePrefix: stackNamePrefix, sourceCodeS3ZipFilePath: sourceCodeS3ZipFilePath]
+}
+
 pipeline {
     agent { label 'slave-ec2-fleet' }
     tools { 
@@ -5,7 +19,7 @@ pipeline {
             terraform "terraform"
         }
     environment {
-        launchTemplateName = "ATTest-EC2Config-ATTestLT-Developement"
+        launchTemplateName = "ATTest-EC2Config-ATTestLT"
         awsCredId = "Mufazzal"
         stackName = "Automation-stack-Developement-" + "$BUILD_ID" 
         port = 3010
@@ -13,59 +27,67 @@ pipeline {
         waitTimeUnitForAppInstall = "MINUTES"
     }
     stages {
-        stage('Launch EC2') {
+        stage {
             steps {
                 sh 'printenv'
-                echo 'Launching EC2 in progress..'
-
-                sh """
-                    cd ATInfraLaunch
-                    terraform init
-                    terraform apply -input=false -auto-approve -var="launchTemplateName=$launchTemplateName" -var="name=Developement-$BUILD_ID"
-                """
                 script {
-                    tfOutput = sh (
-                        script: """
-                            cd ATInfraLaunch
-                            terraform output -json
-                        """,
-                        returnStdout: true
-                    ).trim()
-                    echo "tfOutput: $tfOutput"     
-                    def jsonObj = readJSON text: "$tfOutput"
-                    //def privatIp = "$jsonObj.private_ip.value"
-                    env.privatIp = jsonObj.private_ip.value
-                    echo env.privatIp
-                }           
-
-                echo 'Launching EC2 Finished'
-                echo "Waiting for ${waitTimeForAppInstall} ${waitTimeUnitForAppInstall} for Application installation"
-                sleep(time: waitTimeForAppInstall, unit: waitTimeUnitForAppInstall) 
+                    def bchVar = setBranchSpecificVariables("$JOB_NAME")
+                    echo bchVar
+                }
             }
-        }     
-
-        stage('Installing Dependency') {
-            steps {
-                sh 'npm install'
-            }
-        }      
- 
-        stage('Running Tests') {
-            steps {
-                sh "node test http://${privatIp} ${port}"
-            }
-        }       
-    }
-    post { 
-        always { 
-                echo 'Terminating EC2 in progress..'
-            
-            sh """
-                cd ATInfraLaunch
-                terraform destroy -auto-approve -var="launchTemplateName=$launchTemplateName" -var="name=Developement-$BUILD_ID"
-            """
-
-            echo 'Terminating EC2 Finished'
         }
-    }      
+    //     stage('Launch EC2') {
+    //         steps {
+    //             echo 'Launching EC2 in progress..'
+
+    //             sh """
+    //                 cd ATInfraLaunch
+    //                 terraform init
+    //                 terraform apply -input=false -auto-approve -var="launchTemplateName=$launchTemplateName" -var="name=Developement-$BUILD_ID"
+    //             """
+    //             script {
+    //                 tfOutput = sh (
+    //                     script: """
+    //                         cd ATInfraLaunch
+    //                         terraform output -json
+    //                     """,
+    //                     returnStdout: true
+    //                 ).trim()
+    //                 echo "tfOutput: $tfOutput"     
+    //                 def jsonObj = readJSON text: "$tfOutput"
+    //                 //def privatIp = "$jsonObj.private_ip.value"
+    //                 env.privatIp = jsonObj.private_ip.value
+    //                 echo env.privatIp
+    //             }           
+
+    //             echo 'Launching EC2 Finished'
+    //             echo "Waiting for ${waitTimeForAppInstall} ${waitTimeUnitForAppInstall} for Application installation"
+    //             sleep(time: waitTimeForAppInstall, unit: waitTimeUnitForAppInstall) 
+    //         }
+    //     }     
+
+    //     stage('Installing Dependency') {
+    //         steps {
+    //             sh 'npm install'
+    //         }
+    //     }      
+ 
+    //     stage('Running Tests') {
+    //         steps {
+    //             sh "node test http://${privatIp} ${port}"
+    //         }
+    //     }       
+    // }
+    // post { 
+    //     always { 
+    //             echo 'Terminating EC2 in progress..'
+            
+    //         sh """
+    //             cd ATInfraLaunch
+    //             terraform destroy -auto-approve -var="launchTemplateName=$launchTemplateName" -var="name=Developement-$BUILD_ID"
+    //         """
+
+    //         echo 'Terminating EC2 Finished'
+    //     }
+    // }      
 }
