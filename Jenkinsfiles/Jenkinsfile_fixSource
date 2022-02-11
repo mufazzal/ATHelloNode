@@ -37,11 +37,11 @@ pipeline {
                 sh """
                     cd ATInfraLaunch
                     terraform init
-                    terraform apply /
-                        -input=false /
-                        -auto-approve /
-                        -var="launchTemplateName=$launchTemplateName" /
-                        -var="name=Developement-$BUILD_ID" /
+                    terraform apply \
+                        -input=false \
+                        -auto-approve \
+                        -var="launchTemplateName=$launchTemplateName" \
+                        -var="name=Developement-$BUILD_ID" \
                         -var="s3SourceCodeFilePath=$sourceCodeS3ZipFilePath"
                 """
                 script {
