@@ -4,6 +4,11 @@ pipeline {
             nodejs "nodejs" 
             terraform "terraform"
         }
+
+    parameters {
+        string(name: 'sourceCodeS3ZipFilePath', defaultValue: '', description: 'Please provide S3 path for source code Zip')
+        booleanParam(name: 'waitForUserAfterTest', defaultValue: false, description: 'Should wait For User for procced After Test')
+    }        
     environment {
         launchTemplateName = "ATTest-EC2Config-ATTestLT-Developement"
         awsCredId = "Mufazzal"
@@ -21,7 +26,12 @@ pipeline {
                 sh """
                     cd ATInfraLaunch
                     terraform init
-                    terraform apply -input=false -auto-approve -var="launchTemplateName=$launchTemplateName" -var="name=Developement-$BUILD_ID"
+                    terraform apply / 
+                        -input=false /
+                        -auto-approve /
+                        -var="launchTemplateName=$launchTemplateName" /
+                        -var="name=Developement-$BUILD_ID" /
+                        -var "s3SourceCodeFilePath=$params.sourceCodeS3ZipFilePath"
                 """
                 script {
                     tfOutput = sh (
@@ -33,7 +43,6 @@ pipeline {
                     ).trim()
                     echo "tfOutput: $tfOutput"     
                     def jsonObj = readJSON text: "$tfOutput"
-                    //def privatIp = "$jsonObj.private_ip.value"
                     env.privatIp = jsonObj.private_ip.value
                     echo env.privatIp
                 }           

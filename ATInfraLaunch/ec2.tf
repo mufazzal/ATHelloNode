@@ -10,6 +10,7 @@ resource "aws_instance" "AT_ec2" {
     }
     tags = {
       Name = "AT-Test-${var.name}"
+      s3SourceCodeFilePath = var.s3SourceCodeFilePath
     }
 }
 
@@ -21,6 +22,13 @@ variable "launchTemplateName" {
 
 
 variable "name" {
+  description = "Name to be used on all the resources as identifier"
+  type        = string
+  default     = ""
+}
+
+
+variable "s3SourceCodeFilePath" {
   description = "Name to be used on all the resources as identifier"
   type        = string
   default     = ""
