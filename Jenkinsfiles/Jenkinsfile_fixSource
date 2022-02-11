@@ -1,17 +1,3 @@
-def setPipeLineBranchSpecificVariables(pipelineName) {
-
-    if(pipelineName.contains('Developement')) { 
-        def stackNamePrefix = "Automation-stack-Developement-"
-        def sourceCodeS3ZipFilePath = "s3://muf-modular-cfr-bucket/feature-jenkin-hello/latest.zip" 
-
-    } else if(pipelineName.contains('Master')) { 
-        def stackNamePrefix = "Automation-stack-master-"
-        def sourceCodeS3ZipFilePath = "s3://muf-modular-cfr-bucket/feature-jenkin-hello/latest.zip"
-    }
-
-    return [stackNamePrefix: stackNamePrefix, sourceCodeS3ZipFilePath: sourceCodeS3ZipFilePath]
-}
-
 pipeline {
     agent { label 'slave-ec2-fleet' }
     tools { 
@@ -29,11 +15,19 @@ pipeline {
     stages {
         stage("Enviorment") {
             steps {
+                script {
+                    def pipelineName = "$JOB_NAME"
+                    if(pipelineName.contains('Developement')) { 
+                        env.stackName = "Automation-stack-Developement-$BUILD_ID"
+                        env.sourceCodeS3ZipFilePath = "s3://muf-modular-cfr-bucket/feature-jenkin-hello/latest.zip" 
+
+                    } else if(pipelineName.contains('Master')) { 
+                        env.stackNamePrefix = "Automation-stack-master-$BUILD_ID"
+                        env.sourceCodeS3ZipFilePath = "s3://muf-modular-cfr-bucket/feature-jenkin-hello/latest.zip"
+                    }
+                }
                 sh 'printenv'
-                // script {
-                    setBranchSpecificVariables("$JOB_NAME")
-                    echo bchVar
-                // }
+
             }
         }
         // stage('Launch EC2') {
