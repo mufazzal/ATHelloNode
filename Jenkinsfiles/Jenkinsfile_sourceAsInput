@@ -63,18 +63,18 @@ pipeline {
                 sh "node test http://${privatIp} ${port}"
             }
         }       
+
+        stage('Approval') {
+            when {
+                expression { params.promptBeforeKilMachine == true }
+            }
+
+            steps {
+                input "Kill Automation machine?"
+            }
+        } 
     }
 
-
-    stage('Approval') {
-        when {
-            expression { params.promptBeforeKilMachine == true }
-        }
-
-        steps {
-            input "Kill Automation machine?"
-        }
-    } 
 
 
     post { 
