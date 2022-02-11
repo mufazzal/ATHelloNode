@@ -10,7 +10,7 @@ pipeline {
         booleanParam(name: 'waitForUserAfterTest', defaultValue: false, description: 'Should wait For User for procced After Test')
     }        
     environment {
-        launchTemplateName = "ATTest-EC2Config-ATTestLT-Developement"
+        launchTemplateName = "ATTest-EC2Config-ATTestLT"
         awsCredId = "Mufazzal"
         stackName = "Automation-stack-Developement-" + "$BUILD_ID" 
         port = 3010
