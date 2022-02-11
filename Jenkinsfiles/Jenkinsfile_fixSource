@@ -31,7 +31,7 @@ pipeline {
             steps {
                 sh 'printenv'
                 // script {
-                    def bchVar = setBranchSpecificVariables("$JOB_NAME")
+                    setBranchSpecificVariables("$JOB_NAME")
                     echo bchVar
                 // }
             }
