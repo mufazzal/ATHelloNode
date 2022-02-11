@@ -27,7 +27,7 @@ pipeline {
         waitTimeUnitForAppInstall = "MINUTES"
     }
     stages {
-        stage {
+        stage("Enviorment") {
             steps {
                 sh 'printenv'
                 script {
