@@ -65,10 +65,11 @@ pipeline {
         }       
 
         stage('Approval') {
-            when {
-                expression { params.promptBeforeKilMachine == true }
-            }
+
             input{
+                when {
+                    expression { params.promptBeforeKilMachine == true }
+                }
                 message "Do you wants to kill Automation machine? (to proceede plz open Blue Ocean and click proceed. Jenkin classic has issue with input)"
             }
             steps {
