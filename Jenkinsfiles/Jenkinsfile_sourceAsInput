@@ -68,9 +68,11 @@ pipeline {
             when {
                 expression { params.promptBeforeKilMachine == true }
             }
-
+            input{
+                message "Do you want to proceed for production deployment?"
+            }
             steps {
-                input "Kill Automation machine?"
+                echo "proceeding to kill Automation machine"
             }
         } 
     }
