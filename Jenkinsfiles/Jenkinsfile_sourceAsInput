@@ -29,7 +29,7 @@ pipeline {
                         -input=false /
                         -auto-approve /
                         -var="launchTemplateName=$launchTemplateName" /
-                        -var="name=Developement-$BUILD_ID" /
+                        -var="name=UserDefinedSource-$BUILD_ID" /
                         -var "s3SourceCodeFilePath=$params.sourceCodeS3ZipFilePath"
                 """
                 script {
