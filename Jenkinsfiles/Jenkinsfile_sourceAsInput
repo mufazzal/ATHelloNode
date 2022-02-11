@@ -69,9 +69,15 @@ pipeline {
                 expression { params.promptBeforeKilMachine == true }
             }
             steps {
-                input {
-                    message "Do you wants to kill Automation machine? (to proceede plz open Blue Ocean and click proceed. Jenkin classic has issue with input)"
+                script {
+                    def shouldProceed = input message: 'Do you wants to kill Automation machine?',
+                             parameters: [booleanParam(defaultValue: '',
+                                          description: 'Tests completed. Do you wants to kill Automation machine?',
+                                          name: 'killMachine')]
                 }
+                // input {
+                //     message "Do you wants to kill Automation machine? (to proceede plz open Blue Ocean and click proceed. Jenkin classic has issue with input)"
+                // }
                 echo "proceeding to kill Automation machine"
             }
         } 
