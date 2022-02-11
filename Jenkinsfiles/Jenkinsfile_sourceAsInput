@@ -69,7 +69,7 @@ pipeline {
                 expression { params.promptBeforeKilMachine == true }
             }
             input{
-                message "Do you want to proceed for production deployment?"
+                message "Do you wants to kill Automation machine? (to proceede plz open Blue Ocean and click proceed. Jenkin classic has issue with input)"
             }
             steps {
                 echo "proceeding to kill Automation machine"
