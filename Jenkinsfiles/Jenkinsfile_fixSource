@@ -7,7 +7,6 @@ pipeline {
     environment {
         launchTemplateName = "ATTest-EC2Config-ATTestLT"
         awsCredId = "Mufazzal"
-        stackName = "Automation-stack-Developement-" + "$BUILD_ID" 
         port = 3010
         waitTimeForAppInstall = 3
         waitTimeUnitForAppInstall = "MINUTES"
@@ -18,11 +17,11 @@ pipeline {
                 script {
                     def pipelineName = "$JOB_NAME"
                     if(pipelineName.contains('Developement')) { 
-                        env.stackName = "Automation-stack-Developement-$BUILD_ID"
+                        env.stackName = "Automation-stack_Developement_$BUILD_ID"
                         env.sourceCodeS3ZipFilePath = "s3://muf-modular-cfr-bucket/feature-jenkin-hello/latest.zip" 
 
                     } else if(pipelineName.contains('Master')) { 
-                        env.stackName = "Automation-stack-master-$BUILD_ID"
+                        env.stackName = "Automation-stack_Master_$BUILD_ID"
                         env.sourceCodeS3ZipFilePath = "s3://muf-modular-cfr-bucket/feature-jenkin-hello/latest.zip"
                     }
                 }
