@@ -16,78 +16,78 @@ pipeline {
         waitTimeForAppInstall = 3
         waitTimeUnitForAppInstall = "MINUTES"
     }
-    // stages {
-    //     stage('Launch EC2') {
-    //         steps {
-    //             sh 'printenv'
-    //             echo 'Launching EC2 in progress..'
+    stages {
+        stage('Launch EC2') {
+            steps {
+                sh 'printenv'
+                echo 'Launching EC2 in progress..'
 
-    //             sh """
-    //                 cd ATInfraLaunch
-    //                 terraform init
-    //                 terraform apply / 
-    //                     -input=false /
-    //                     -auto-approve /
-    //                     -var="launchTemplateName=$launchTemplateName" /
-    //                     -var="name=Developement-$BUILD_ID" /
-    //                     -var "s3SourceCodeFilePath=$params.sourceCodeS3ZipFilePath"
-    //             """
-    //             script {
-    //                 tfOutput = sh (
-    //                     script: """
-    //                         cd ATInfraLaunch
-    //                         terraform output -json
-    //                     """,
-    //                     returnStdout: true
-    //                 ).trim()
-    //                 echo "tfOutput: $tfOutput"     
-    //                 def jsonObj = readJSON text: "$tfOutput"
-    //                 env.privatIp = jsonObj.private_ip.value
-    //                 echo env.privatIp
-    //             }           
+                sh """
+                    cd ATInfraLaunch
+                    terraform init
+                    terraform apply / 
+                        -input=false /
+                        -auto-approve /
+                        -var="launchTemplateName=$launchTemplateName" /
+                        -var="name=Developement-$BUILD_ID" /
+                        -var "s3SourceCodeFilePath=$params.sourceCodeS3ZipFilePath"
+                """
+                script {
+                    tfOutput = sh (
+                        script: """
+                            cd ATInfraLaunch
+                            terraform output -json
+                        """,
+                        returnStdout: true
+                    ).trim()
+                    echo "tfOutput: $tfOutput"     
+                    def jsonObj = readJSON text: "$tfOutput"
+                    env.privatIp = jsonObj.private_ip.value
+                    echo env.privatIp
+                }           
 
-    //             echo 'Launching EC2 Finished'
-    //             echo "Waiting for ${waitTimeForAppInstall} ${waitTimeUnitForAppInstall} for Application installation"
-    //             sleep(time: waitTimeForAppInstall, unit: waitTimeUnitForAppInstall) 
-    //         }
-    //     }     
+                echo 'Launching EC2 Finished'
+                echo "Waiting for ${waitTimeForAppInstall} ${waitTimeUnitForAppInstall} for Application installation"
+                sleep(time: waitTimeForAppInstall, unit: waitTimeUnitForAppInstall) 
+            }
+        }     
 
-    //     stage('Installing Dependency') {
-    //         steps {
-    //             sh 'npm install'
-    //         }
-    //     }      
+        stage('Installing Dependency') {
+            steps {
+                sh 'npm install'
+            }
+        }      
  
-    //     stage('Running Tests') {
-    //         steps {
-    //             sh "node test http://${privatIp} ${port}"
-    //         }
-    //     }       
-    // }
+        stage('Running Tests') {
+            steps {
+                sh "node test http://${privatIp} ${port}"
+            }
+        }       
+    }
 
 
-    // stage('Approval') {
-    //     when {
-    //         expression { params.promptBeforeKilMachine == true }
-    //     }
+    stage('Approval') {
+        when {
+            expression { params.promptBeforeKilMachine == true }
+        }
 
-    //     steps {
-    //         input "Kill Automation machine?"
-    //     }
-    // } 
+        steps {
+            input "Kill Automation machine?"
+        }
+    } 
 
 
-    // post { 
-    //     always { 
-    //             echo 'Terminating EC2 in progress..'
+    post { 
+        always { 
+                echo 'Terminating EC2 in progress..'
             
-    //         sh """
-    //             cd ATInfraLaunch
-    //             terraform destroy -auto-approve \
-    //                 -var="launchTemplateName=$launchTemplateName"
-    //         """
+            sh """
+                cd ATInfraLaunch
+                terraform destroy -auto-approve \
+                    -var="launchTemplateName=$launchTemplateName"
+            """
 
-    //         echo 'Terminating EC2 Finished'
-    //     }
-    // }      
+            echo 'Terminating EC2 Finished'
+        }
+    }      
 }
