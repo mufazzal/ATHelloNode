@@ -40,7 +40,7 @@ pipeline {
                         -input=false \
                         -auto-approve \
                         -var="launchTemplateName=$launchTemplateName" \
-                        -var="name=${env.branchIdf}-$BUILD_ID" \
+                        -var="name=${env.branchIdf}_$BUILD_ID" \
                         -var="s3SourceCodeFilePath=$sourceCodeS3ZipFilePath"
                 """
                 script {
