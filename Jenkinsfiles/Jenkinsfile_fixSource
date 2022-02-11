@@ -17,9 +17,11 @@ pipeline {
                 script {
                     def pipelineName = "$JOB_NAME"
                     if(pipelineName.contains('Developement')) { 
+                        env.branchIdf = "Developement"
                         env.sourceCodeS3ZipFilePath = "s3://muf-modular-cfr-bucket/feature-jenkin-hello/latest.zip" 
 
                     } else if(pipelineName.contains('Master')) { 
+                        env.branchIdf = "Master"
                         env.sourceCodeS3ZipFilePath = "s3://muf-modular-cfr-bucket/feature-jenkin-hello/latest.zip"
                     }
                 }
@@ -38,7 +40,7 @@ pipeline {
                         -input=false \
                         -auto-approve \
                         -var="launchTemplateName=$launchTemplateName" \
-                        -var="name=Developement-$BUILD_ID" \
+                        -var="name=${env.branchIdf}-$BUILD_ID" \
                         -var="s3SourceCodeFilePath=$sourceCodeS3ZipFilePath"
                 """
                 script {
