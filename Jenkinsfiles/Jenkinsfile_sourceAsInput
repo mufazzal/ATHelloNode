@@ -6,7 +6,7 @@ pipeline {
         }
 
     parameters {
-        string(name: 'sourceCodeS3ZipFilePath', defaultValue: '', description: 'Please provide S3 path for source code Zip')
+        string(name: 'sourceCodeS3ZipFilePath', defaultValue: '', description: 'Please provide S3 path for source code Zip EX: s3://<bucket name>/<path to zip>')
         booleanParam(name: 'shouldKillATTMachine', defaultValue: true, description: 'Should Jenkins kill the automation test machine after test finished')
     }        
     environment {
