@@ -13,7 +13,7 @@
 					"script": {
 						"exec": [
 							"pm.test('There should be greeting', function() {\r",
-							"    pm.expect(pm.response.text()).to.include('Hello from Application1')\r",
+							"    pm.expect(pm.response.text()).to.include('Hello from Application')\r",
 							"})"
 						],
 						"type": "text/javascript"
