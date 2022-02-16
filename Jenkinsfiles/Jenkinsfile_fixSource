@@ -10,6 +10,8 @@ pipeline {
         port = 3010
         waitTimeForAppInstall = 3
         waitTimeUnitForAppInstall = "MINUTES"
+        repoBucket = "muf-modular-cfr-bucket"
+        zipfileName = "latest.zip"
     }
     stages {
         stage("Enviorment") {
@@ -18,11 +20,11 @@ pipeline {
                     def pipelineName = "$JOB_NAME"
                     if(pipelineName.contains('Developement')) { 
                         env.branchIdf = "Developement"
-                        env.sourceCodeS3ZipFilePath = "s3://muf-modular-cfr-bucket/feature-jenkin-hello/latest.zip" 
+                        env.sourceCodeS3ZipFilePath = "s3://$repoBucket/develop/$zipfileName" 
 
                     } else if(pipelineName.contains('Master')) { 
                         env.branchIdf = "Master"
-                        env.sourceCodeS3ZipFilePath = "s3://muf-modular-cfr-bucket/feature-jenkin-hello/latest.zip"
+                        env.sourceCodeS3ZipFilePath = "s3://$repoBucket/master/$zipfileName"
                     }
                 }
                 sh 'printenv'
