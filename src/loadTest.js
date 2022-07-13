@@ -1,12 +1,15 @@
 const loadtest = require('loadtest');
+var args = process.argv.slice(2);
+const host = args[0]
+
 const options = {
-	url: 'http://127.0.0.1:3010/loadTest/10',
-	maxRequests: 10000,
-    concurrency: 5,
+	url: `http://${host}/loadTest/20`,
+//	url: 'http://127.0.0.1:3010/loadTest/10',
+	maxRequests: 50,
+    concurrency: 10,
     method: "GET",
-    rps: 100,
-    debug: true,
-    timelimit: 10
+    rps: 10,
+    debug: true
 };
 loadtest.loadTest(options, function(error, result)
 {
